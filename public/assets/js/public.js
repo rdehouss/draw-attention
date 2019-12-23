@@ -265,6 +265,7 @@
 			var areaData = {
 				style: area.data('color-scheme') ? area.data('color-scheme') : 'default',
 				title: area.attr('title'),
+				showTooltip: area.data('show-tooltip'),
 				href: area.attr('href'),
 				target: area.attr('target'),
 				action: area.data('action'),
@@ -370,7 +371,7 @@
 	var shapeEvents = function(shape, areaData) {
 		// Handle URL spots
 		if (areaData.action == 'url') {
-			if (areaData.title) {
+			if (areaData.title && areaData.showTooltip == 1) {
 				shape.bindTooltip(areaData.title);
 			}
 			shape.on('click', function(e) {
@@ -412,7 +413,7 @@
 
 		// Add styled tooltip to all non-hover areas
 		if (areaData.action === 'url' || areaData.trigger === 'click' && areaData.layout !== 'tooltip') {
-			if (areaData.title) {
+			if (areaData.title && areaData.showTooltip == 1) {
 				shape.bindTooltip(areaData.title);
 			}
 		}

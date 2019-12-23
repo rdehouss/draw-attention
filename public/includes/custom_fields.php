@@ -213,6 +213,11 @@ class DrawAttention_CustomFields {
 							'id'   => 'title',
 							'type' => 'text',
 						),
+						'tooltip' => array(
+							'name' => __('Tooltip?', 'draw-attention' ),
+							'id'   => 'tooltip',
+							'type' => 'checkbox',
+						),
 						'action' => array(
 							'name' => __('Action', 'draw-attention' ),
 							'description' => '',

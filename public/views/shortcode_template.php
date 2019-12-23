@@ -127,6 +127,7 @@ if ( empty( $has_hotspots ) ) : ?>
 					$href = $target == 'url' ? $target_url : '#hotspot-' . $settings['spot_id'] . '-' . $key;
 					$href = !empty($href) ? $href : '#';
 					$title = !empty( $hotspot['title'] ) ? $hotspot['title'] : '';
+					$show_tooltip = !empty( $hotspot['tooltip'] ) ? 1 : 0;
 					if ( empty( $hotspot['description'] ) ) {
 						$hotspot['description'] = '';
 					}
@@ -144,6 +145,7 @@ if ( empty( $has_hotspots ) ) : ?>
 					title="<?php echo $title; ?>"
 					alt="<?php echo esc_attr( $title ); ?>"
 					data-action="<?php echo $target; ?>"
+					data-show-tooltip="<?php echo $show_tooltip; ?>"
 					data-color-scheme="<?php echo $color_scheme; ?>"
 					target="<?php echo $target_window; ?>"
 					class="<?php echo $area_class; ?>"
