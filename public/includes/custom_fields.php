@@ -211,7 +211,7 @@ class DrawAttention_CustomFields {
 							'options' => array(
 								'poly' => 'Poly',
 								'rect' => 'Rect',
-								'oval' => 'Oval',
+								// 'oval' => 'Oval',
 							),
 						),
 						'coordinates' => array(
