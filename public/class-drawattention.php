@@ -31,7 +31,7 @@ if ( !class_exists( 'DrawAttention' ) ) {
 		 *
 		 * @var     string
 		 */
-		const VERSION = '1.8.22';
+		const VERSION = '1.8.24';
 		const file = __FILE__;
 		const name = 'Draw Attention';
 		const slug = 'drawattention';
@@ -368,6 +368,11 @@ if ( !class_exists( 'DrawAttention' ) ) {
 		}
 
 		public function cmb2_meta_box_url( $url ) {
+			$screen = get_current_screen();
+			if ( 'page' == $screen->post_type ) {
+				return $url;
+			}
+
 			$url = self::get_plugin_url().'/public/includes/lib/CMB2/';
 			return $url;
 		}
