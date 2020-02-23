@@ -285,7 +285,7 @@
 					renderCircle(coords, map, img, areaData);
 					break;
 				case 'rect':
-					renderPoly(coords, map, img, areaData);
+					renderRect(coords, map, img, areaData);
 					break
 				case 'poly':
 					renderPoly(coords, map, img, areaData);
@@ -307,6 +307,25 @@
 		}).addTo(map)
 		shapeEvents(circle, areaData);
 		shapeTags(circle, areaData);
+	};
+
+	var renderRect = function(coords, map, img, areaData) {
+		var polyCoords = [
+			[img.data('natH') - coords[1], coords[0]],
+			[img.data('natH') - coords[3], coords[2]]
+		];
+		var poly = L.rectangle(polyCoords, {
+			className: 'hotspot-' + areaData.style,
+			title: areaData.title
+		}).addTo(map)
+
+		if (areaData.href.charAt(0) === '#') {
+			var spotName = areaData.href.replace('#', '');
+			infoSpots[spotName] = poly;
+		}
+
+		shapeEvents(poly, areaData);
+		shapeTags(poly, areaData);
 	};
 
 	var renderPoly = function (coords, map, img, areaData) {

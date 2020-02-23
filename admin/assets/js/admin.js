@@ -40,6 +40,28 @@
 		$('.cmb-repeatable-grouping').addClass('closed');
 	};
 
+	var shapeSelect = function() {
+		$('.cmb2_select.shape').each(function() {
+			var shape = $(this).val()
+			var bigParent = $(this).parents('.cmb-field-list').first()
+			var input = bigParent.find('input[data-image-url]')
+
+			input.attr('data-shape', shape)
+			input.data('shape', shape)
+		})
+
+		$('.cmb2_select.shape').on('change', function() {
+			var shape = $(this).val()
+			var bigParent = $(this).parents('.cmb-field-list')
+			var input = bigParent.find('input[data-image-url]')
+
+			input.attr('data-shape', shape)
+			input.data('shape', shape)
+
+			canvasDraw(bigParent)
+		})
+	}
+
 	/* Events that call hotspotNameUpdate to update the title bar text */
 	var hotspotNames = function(){
 		$('#field_group').on('keyup click', 'input[name$="[title]"]', function(){
@@ -211,6 +233,7 @@
 
 	hotspotAdmin.init = function() {
 		accordion();
+		shapeSelect();
 		hotspotNames();
 		hotspotCloning();
 		hotspotActions();

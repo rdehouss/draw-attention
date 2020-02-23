@@ -200,11 +200,26 @@ class DrawAttention_CustomFields {
 					),
 					// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
 					'fields'      => array(
+						'shape' => array(
+							'name' => __('Shape', 'draw-attention' ),
+							'description' => '',
+							'id'   => 'shape',
+							'attributes' => array(
+								'class' => 'cmb2_select shape',
+							),
+							'type' => 'select',
+							'options' => array(
+								'poly' => 'Poly',
+								'rect' => 'Rect',
+								'oval' => 'Oval',
+							),
+						),
 						'coordinates' => array(
 							'name' => __( 'Coordinates', 'draw-attention' ),
 							'id'   => 'coordinates',
 							'type' => 'text',
 							'attributes' => array(
+								'data-shape' => '',
 								'data-image-url' => ( !empty( $thumbnail_src[0] ) ) ? $thumbnail_src[0] : '',
 							),
 						),

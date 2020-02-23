@@ -17,7 +17,8 @@
         var startpoint = false;
 
         settings = $.extend({
-            imageUrl: $(this).attr('data-image-url')
+            shape: $(this).data('shape'),
+            imageUrl: $(this).data('image-url')
         }, options);
 
         var v = $(input).val().replace(/[^0-9\,]/ig, '');
@@ -119,17 +120,6 @@
             x = e.offsetX;
             y = e.offsetY;
 
-            if (points.length >= 6) {
-                var c = getCenter();
-                ctx.fillRect(c.x - 4, c.y - 4, 8, 8);
-                dis = Math.sqrt(Math.pow(x - c.x, 2) + Math.pow(y - c.y, 2));
-                if (dis < 6) {
-                    startpoint = false;
-                    $(this).on('mousemove', moveall);
-                    return false;
-                }
-            }
-
             for (var i = 0; i < points.length; i += 2) {
                 dis = Math.sqrt(Math.pow(x - points[i], 2) + Math.pow(y - points[i + 1], 2));
                 if (dis < 6) {
@@ -139,22 +129,52 @@
                 }
             }
 
-            for (var i = 0; i < points.length; i += 2) {
-                if (i > 1) {
-                    lineDis = dotLineLength(
-                        x, y,
-                        points[i], points[i + 1],
-                        points[i - 2], points[i - 1],
-                        true
-                    );
-                    if (lineDis < 6) {
-                        insertAt = i;
+            if (settings.shape == 'poly') {
+                if (points.length >= 6) {
+                    var c = getCenter(points);
+                    ctx.fillRect(c.x - 4, c.y - 4, 8, 8);
+                    dis = Math.sqrt(Math.pow(x - c.x, 2) + Math.pow(y - c.y, 2));
+                    if (dis < 6) {
+                        startpoint = false;
+                        $(this).on('mousemove', moveall);
+                        return false;
                     }
                 }
+                for (var i = 0; i < points.length; i += 2) {
+                    if (i > 1) {
+                        lineDis = dotLineLength(
+                            x, y,
+                            points[i], points[i + 1],
+                            points[i - 2], points[i - 1],
+                            true
+                        );
+                        if (lineDis < 6) {
+                            insertAt = i;
+                        }
+                    }
+                }
+
+                points.splice(insertAt, 0, Math.round(x), Math.round(y));
+                activePoint = insertAt;
+            } else if (settings.shape == 'rect') {
+                var c = getCenter([
+                    points[0], points[1],
+                    points[2], points[1],
+                    points[2], points[3],
+                    points[0], points[3],
+                ]);
+                ctx.fillRect(c.x - 4, c.y - 4, 8, 8);
+                dis = Math.sqrt(Math.pow(x - c.x, 2) + Math.pow(y - c.y, 2));
+                if (dis < 6) {
+                    startpoint = false;
+                    $(this).on('mousemove', moveall);
+                    return false;
+                }
+
+                points = [Math.round(x), Math.round(y)]
+                activePoint = points.length;
             }
 
-            points.splice(insertAt, 0, Math.round(x), Math.round(y));
-            activePoint = insertAt;
             $(this).on('mousemove', move);
 
             draw();
@@ -174,31 +194,54 @@
             ctx.fillStyle = 'rgb(255,255,255)';
             ctx.strokeStyle = 'rgb(255,20,20)';
             ctx.lineWidth = 1;
-            if (points.length >= 6) {
-                var c = getCenter();
+
+            if (settings.shape == 'poly') {
+                if (points.length >= 6) {
+                    var c = getCenter(points);
+                    ctx.fillRect(c.x - 4, c.y - 4, 8, 8);
+                }
+                ctx.beginPath();
+                ctx.moveTo(points[0], points[1]);
+                for (var i = 0; i < points.length; i += 2) {
+                    ctx.fillRect(points[i] - 2, points[i + 1] - 2, 4, 4);
+                    ctx.strokeRect(points[i] - 2, points[i + 1] - 2, 4, 4);
+                    if (points.length > 2 && i > 1) {
+                        ctx.lineTo(points[i], points[i + 1]);
+                    }
+                }
+                ctx.closePath();
+            } else if (settings.shape == 'rect') {
+                var c = getCenter([
+                    points[0], points[1],
+                    points[2], points[1],
+                    points[2], points[3],
+                    points[0], points[3],
+                ]);
                 ctx.fillRect(c.x - 4, c.y - 4, 8, 8);
-            }
-            ctx.beginPath();
-            ctx.moveTo(points[0], points[1]);
-            for (var i = 0; i < points.length; i += 2) {
-                ctx.fillRect(points[i] - 2, points[i + 1] - 2, 4, 4);
-                ctx.strokeRect(points[i] - 2, points[i + 1] - 2, 4, 4);
-                if (points.length > 2 && i > 1) {
-                    ctx.lineTo(points[i], points[i + 1]);
+
+                for (var i = 0; i < points.length; i += 2) {
+                    ctx.fillRect(points[i] - 2, points[i + 1] - 2, 4, 4);
+                    ctx.strokeRect(points[i] - 2, points[i + 1] - 2, 4, 4);
+                }
+
+                if (points.length == 4) {
+                    var width = points[2]-points[0];
+                    var height = points[3]-points[1];
+
+                    ctx.rect(points[0],points[1],width,height);
                 }
             }
-            ctx.closePath();
+
             ctx.fillStyle = 'rgba(255,0,0,0.3)';
             ctx.fill();
             ctx.stroke();
-
         };
 
         record = function () {
             $(input).val(points.join(','));
         };
 
-        getCenter = function () {
+        getCenter = function (points) {
             var ptc = [];
             for (i = 0; i < points.length; i++) {
                 ptc.push({x: points[i], y: points[++i]});

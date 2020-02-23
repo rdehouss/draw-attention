@@ -119,6 +119,7 @@ if ( empty( $has_hotspots ) ) : ?>
 		<map name="hotspots-image-<?php echo $settings['image_id']; ?>" class="hotspots-map">
 			<?php foreach( $settings['hotspots'] as $key => $hotspot ) : ?>
 				<?php
+					$shape = $hotspot['shape'];
 					$coords = $hotspot['coordinates'];
 					$target = !empty( $hotspot['action'] ) ? $hotspot['action'] : '';
 					$new_window = !empty( $hotspot['action-url-open-in-window'] ) ? $hotspot['action-url-open-in-window'] : '';
@@ -141,7 +142,7 @@ if ( empty( $has_hotspots ) ) : ?>
 
 				?>
 				<area
-					shape="poly"
+					shape="<?php echo $shape; ?>"
 					coords="<?php echo $coords; ?>"
 					href="<?php echo $href; ?>"
 					title="<?php echo $title; ?>"
