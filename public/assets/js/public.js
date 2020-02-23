@@ -74,6 +74,7 @@
 		var content = container.find('.hotspots-placeholder');
 		initial.addClass('visible');
 		container.on('active.responsilight inactive.responsilight', function(e){
+			var shape = $(e.target)
 			var data = $(e.target).data('areaData');
 			var info;
 			if (e.type === 'active') {
@@ -81,6 +82,12 @@
 			} else {
 				info = initial;
 			}
+
+			info.children('.close').on('click', function (e) {
+				e.preventDefault();
+				info.removeClass('visible');
+				shape.removeClass('hotspot-active');
+			});
 
 			content.children('.visible').removeClass('visible');
 			info.removeClass('da-hidden').addClass('visible').appendTo(content);
@@ -266,6 +273,7 @@
 				style: area.data('color-scheme') ? area.data('color-scheme') : 'default',
 				title: area.attr('title'),
 				showTooltip: area.data('show-tooltip'),
+				tags: area.data('tags'),
 				href: area.attr('href'),
 				target: area.attr('target'),
 				action: area.data('action'),
@@ -298,6 +306,7 @@
 			title: areaData.title
 		}).addTo(map)
 		shapeEvents(circle, areaData);
+		shapeTags(circle, areaData);
 	};
 
 	var renderPoly = function (coords, map, img, areaData) {
@@ -327,6 +336,7 @@
 		}
 
 		shapeEvents(poly, areaData);
+		shapeTags(poly, areaData);
 	};
 
 	var shapeOver = function(shape, areaData, e) {
@@ -365,6 +375,12 @@
 		var oldActive = $shape.siblings('.hotspot-active');
 		if (oldActive.length) {
 			oldActive.removeClass('hotspot-active');
+		}
+	};
+
+	var shapeTags = function(shape, areaData) {
+		for (let tag of areaData.tags) {
+			shape._path.classList.add(`x-tag-${tag}`);
 		}
 	};
 

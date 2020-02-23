@@ -58,6 +58,7 @@ if ( empty( $has_hotspots ) ) : ?>
 			stroke-opacity: <?php echo $style['display']['borderOpacity']; ?>;
 		}
 		#<?php echo $settings['spot_id']; ?> .hotspot-<?php echo $style['name']; ?>:hover,
+		#<?php echo $settings['spot_id']; ?> .hotspot-<?php echo $style['name']; ?>.hotspot-highlight,
 		#<?php echo $settings['spot_id']; ?> .hotspot-<?php echo $style['name']; ?>.hotspot-active {
 			fill: <?php echo $style['hover']['fillColor']; ?>;
 			fill-opacity: <?php echo $style['hover']['fillOpacity']; ?>;
@@ -128,6 +129,7 @@ if ( empty( $has_hotspots ) ) : ?>
 					$href = !empty($href) ? $href : '#';
 					$title = !empty( $hotspot['title'] ) ? $hotspot['title'] : '';
 					$show_tooltip = !empty( $hotspot['tooltip'] ) ? 1 : 0;
+					$tags = !empty(trim($hotspot['tags'])) ? preg_split('/[, ]/', trim($hotspot['tags']), -1, PREG_SPLIT_NO_EMPTY) : [];
 					if ( empty( $hotspot['description'] ) ) {
 						$hotspot['description'] = '';
 					}
@@ -146,6 +148,7 @@ if ( empty( $has_hotspots ) ) : ?>
 					alt="<?php echo esc_attr( $title ); ?>"
 					data-action="<?php echo $target; ?>"
 					data-show-tooltip="<?php echo $show_tooltip; ?>"
+					data-tags='<?php echo json_encode($tags); ?>'
 					data-color-scheme="<?php echo $color_scheme; ?>"
 					target="<?php echo $target_window; ?>"
 					class="<?php echo $area_class; ?>"
@@ -190,7 +193,9 @@ if ( empty( $has_hotspots ) ) : ?>
 				<?php endif; ?>
 				<div class="hotspot-content">
 					<?php if( !empty( $hotspot['description'] ) ) echo apply_filters( 'da_description', do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $hotspot['description'] ) ) ) ); ?>
+					<?php if( !empty( $hotspot['tags'] ) ) echo $hotspot['tags']; ?>
 				</div>
+				<a href="#close" class="close"></a>
 			</div>
 		<?php endforeach; ?>
 	</div>

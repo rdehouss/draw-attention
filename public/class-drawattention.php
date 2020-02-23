@@ -316,7 +316,7 @@ if ( !class_exists( 'DrawAttention' ) ) {
 		 * @since    1.0.0
 		 */
 		public function enqueue_styles() {
-			wp_register_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
+			wp_register_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.min.css', __FILE__ ), array(), self::VERSION );
 		}
 
 		/**
@@ -429,7 +429,7 @@ if ( !class_exists( 'DrawAttention' ) ) {
 			}
 
 			// Set default values for free settings
-			$settings['layout'] = 'left';
+			$settings['layout'] = 'overlay';
 			$settings['event_trigger'] = 'click';
 			$settings['always_visible'] = 'false';
 

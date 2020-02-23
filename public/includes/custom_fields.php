@@ -254,6 +254,12 @@ class DrawAttention_CustomFields {
 								'data-action' => 'more-info',
 							),
 						),
+						'tags' => array(
+							'name' => __('Tags', 'draw-attention' ),
+							'desc' => __( 'Separate with comma (",") or a space (" ")', 'draw-attention' ),
+							'id'   => 'tags',
+							'type' => 'text',
+						),
 						'detail_image' => array(
 							'name' => __( 'Detail Image', 'draw-attention' ),
 							'desc' => __( 'Upload an image or enter a URL to show in the more info box', 'draw-attention' ),

@@ -18,6 +18,7 @@ config.codekit
 *~
 database.sql
 .htaccess
+.vscode
 .svn
 .cvs
 .git
