@@ -50,7 +50,7 @@
 			input.data('shape', shape)
 		})
 
-		$('.cmb2_select.shape').on('change', function() {
+		$('.cmb2_select.shape').off('change').on('change', function() {
 			var shape = $(this).val()
 			var bigParent = $(this).parents('.cmb-field-list')
 			var input = bigParent.find('input[data-image-url]')
@@ -250,6 +250,7 @@
 		var coordsInputs = $('input[data-image-url]');
 		coordsInputs.off('change').siblings('div, button, canvas').remove();
 		coordsInputs.canvasAreaDraw();
+		shapeSelect();
 	}
 
 }(jQuery, window.hotspotAdmin = window.hotspotAdmin || {}));
