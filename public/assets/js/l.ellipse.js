@@ -136,7 +136,9 @@ L.Ellipse = L.Path.extend({
 
         this._point = this._map.latLngToLayerPoint(latlng);
         this._radiusX = Math.max(this._point.x - pointLeft.x, 1);
+        this._radiusX = this._mRadiusX // RDE, why not using this?
         this._radiusY = Math.max(pointBelow.y - this._point.y, 1);
+        this._radiusY = this._mRadiusY // RDE, why not using this?
         this._tilt = Math.PI * this._tiltDeg / 180;
         this._endPointParams = this._centerPointToEndPoint();
         this._updateBounds();
