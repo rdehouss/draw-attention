@@ -284,6 +284,9 @@
 				case 'circle':
 					renderCircle(coords, map, img, areaData);
 					break;
+				case 'oval':
+					renderOval(coords, map, img, areaData);
+					break
 				case 'rect':
 					renderRect(coords, map, img, areaData);
 					break
@@ -307,6 +310,34 @@
 		}).addTo(map)
 		shapeEvents(circle, areaData);
 		shapeTags(circle, areaData);
+	};
+
+	var renderOval = function(coords, map, img, areaData) {
+		var center = {
+			x: (parseInt(coords[0]) + parseInt(coords[2])) / 2,
+			y: (parseInt(coords[1]) + parseInt(coords[3])) / 2
+		}
+
+		var poly = L.ellipse(
+			[img.data('natH') - center.y, center.x], // center
+			[
+				Math.abs(coords[0] - coords[2]) / Math.PI,
+				Math.abs(coords[1] - coords[3]) / Math.PI
+			], // radii (x, y)
+			0, // rotation
+			{
+				className: 'hotspot-' + areaData.style,
+				title: areaData.title
+			}
+		).addTo(map)
+
+		if (areaData.href.charAt(0) === '#') {
+			var spotName = areaData.href.replace('#', '');
+			infoSpots[spotName] = poly;
+		}
+
+		shapeEvents(poly, areaData);
+		shapeTags(poly, areaData);
 	};
 
 	var renderRect = function(coords, map, img, areaData) {
@@ -571,6 +602,9 @@ jQuery(function(){
 	hotspots.compatibilityFixes();
 });
 
+jQuery(window).on('fullscreenchange', function(e) {
+	jQuery(window).trigger("resize")
+});
 jQuery(window).on('resize orientationchange', function(e){
 	var $window = jQuery(this);
 	if (!hotspots.resizing) {

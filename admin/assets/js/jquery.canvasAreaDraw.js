@@ -156,7 +156,7 @@
 
                 points.splice(insertAt, 0, Math.round(x), Math.round(y));
                 activePoint = insertAt;
-            } else if (settings.shape == 'rect') {
+            } else if (settings.shape == 'rect' || settings.shape == 'oval') {
                 var c = getCenter([
                     points[0], points[1],
                     points[2], points[1],
@@ -230,6 +230,27 @@
 
                     ctx.rect(points[0],points[1],width,height);
                 }
+            } else if (settings.shape == 'oval') {
+                var c = getCenter([
+                    points[0], points[1],
+                    points[2], points[1],
+                    points[2], points[3],
+                    points[0], points[3],
+                ]);
+                ctx.fillRect(c.x - 4, c.y - 4, 8, 8);
+
+                for (var i = 0; i < points.length; i += 2) {
+                    ctx.fillRect(points[i] - 2, points[i + 1] - 2, 4, 4);
+                    ctx.strokeRect(points[i] - 2, points[i + 1] - 2, 4, 4);
+                }
+
+                ctx.beginPath();
+
+                ctx.moveTo(points[0], points[1] + (points[3] - points[1]) / 2);
+                ctx.bezierCurveTo(points[0], points[1], points[2], points[1], points[2], points[1] + (points[3] - points[1]) / 2);
+                ctx.bezierCurveTo(points[2], points[3], points[0], points[3], points[0], points[1] + (points[3] - points[1]) / 2);
+
+                ctx.closePath();
             }
 
             ctx.fillStyle = 'rgba(255,0,0,0.3)';
