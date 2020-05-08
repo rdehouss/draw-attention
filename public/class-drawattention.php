@@ -31,7 +31,7 @@ if ( !class_exists( 'DrawAttention' ) ) {
 		 *
 		 * @var     string
 		 */
-		const VERSION = '1.8.25';
+		const VERSION = '1.8.28';
 		const file = __FILE__;
 		const name = 'Draw Attention';
 		const slug = 'drawattention';
@@ -325,7 +325,7 @@ if ( !class_exists( 'DrawAttention' ) ) {
 		 * @since    1.0.0
 		 */
 		public function enqueue_scripts() {
-			wp_register_script( $this->plugin_slug . '-leaflet', plugins_url( 'assets/js/leaflet.js', __FILE__ ), array(), '1.3.4', $in_footer = true );
+			wp_register_script( $this->plugin_slug . '-leaflet', plugins_url( 'assets/js/leaflet.js', __FILE__ ), array(), '1.5.1', $in_footer = true );
 			wp_register_script( $this->plugin_slug . '-leaflet-ellipse', plugins_url( 'assets/js/l.ellipse.js', __FILE__ ), array( $this->plugin_slug . '-leaflet' ), '1.0', $in_footer = true );
 			wp_register_script( $this->plugin_slug . '-leaflet-rrose', plugins_url( 'assets/js/leaflet.rrose-min.js', __FILE__ ), array( $this->plugin_slug . '-leaflet' ), '0.2.0', $in_footer = true );
 			wp_register_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( $this->plugin_slug . '-leaflet-rrose', $this->plugin_slug . '-leaflet-ellipse', 'jquery' ), self::VERSION, true );
@@ -369,6 +369,10 @@ if ( !class_exists( 'DrawAttention' ) ) {
 		}
 
 		public function cmb2_meta_box_url( $url ) {
+			if ( ! function_exists( 'get_current_screen' ) ) {
+				return $url;
+			}
+
 			$screen = get_current_screen();
 			if ( 'page' == $screen->post_type ) {
 				return $url;
