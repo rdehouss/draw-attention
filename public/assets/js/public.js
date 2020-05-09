@@ -83,7 +83,7 @@
 				info = initial;
 			}
 
-			info.children('.close').on('click', function (e) {
+			info[0].querySelectorAll('.close')[0].addEventListener('click', function (e) {
 				e.preventDefault();
 				info.removeClass('visible');
 				shape.removeClass('hotspot-active');
